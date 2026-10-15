@@ -1,0 +1,56 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: ui-sans-serif, system-ui, 'Segoe UI', Roboto, sans-serif;
+
+  /* Neutral surface + one accent, so numbers stay the focus */
+  --color-canvas: #f7f7f5;
+  --color-surface: #ffffff;
+  --color-line: #e7e6e1;
+  --color-ink: #1c1b18;
+  --color-ink-muted: #6b6a63;
+  --color-accent: #2f7d4f;
+  --color-accent-strong: #256641;
+  --color-accent-soft: #e8f3ec;
+  --color-danger: #c2412d;
+  --color-profit: #2f7d4f;
+  --color-loss: #c2412d;
+
+  /* Strong custom curves; built-in CSS easings feel weak */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    @apply bg-canvas font-sans text-ink;
+  }
+
+  /* Money and quantities line up in columns */
+  input[type='number'],
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-property: opacity, color, background-color, border-color !important;
+  }
+}
+
+/* Hover only on devices with a real pointer, so taps don't stick */
+@custom-variant hover-fine {
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      @slot;
+    }
+  }
+}
