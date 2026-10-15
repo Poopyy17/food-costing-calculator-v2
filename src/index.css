@@ -44,6 +44,13 @@
     @apply bg-canvas font-sans text-ink;
   }
 
+  /* Tailwind v4 resets buttons to the default cursor; every button and tab is clickable. */
+  button:not(:disabled),
+  [role='button']:not([aria-disabled='true']),
+  [role='tab'] {
+    cursor: pointer;
+  }
+
   /* Money and quantities line up in columns */
   input[type='number'],
   .tabular {
