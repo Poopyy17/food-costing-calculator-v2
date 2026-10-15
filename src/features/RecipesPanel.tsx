@@ -102,7 +102,7 @@ function GettingStarted({ onCreate }: { onCreate: () => void }) {
           <button type="button" className="font-medium text-accent underline-offset-2 hover-fine:underline" onClick={loadSample}>
             Load sample data
           </button>{' '}
-          from the guide.
+          to try it out.
         </p>
       )}
     </Card>

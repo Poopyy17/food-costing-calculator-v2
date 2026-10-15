@@ -8,6 +8,7 @@ import { evaluateRecipe, METHOD_LABELS } from '../lib/recipe'
 import { useNav } from '../nav'
 import { useStore } from '../store'
 import { useOpexTotals } from '../lib/useOpexTotals'
+import { ExportCard } from './ExportCard'
 
 export function SummaryPanel() {
   const recipes = useStore((s) => s.recipes)
@@ -107,25 +108,28 @@ export function SummaryPanel() {
         )}
       </Card>
 
-      <Card title="Monthly profit projection" className="self-start max-lg:order-first lg:sticky lg:top-28">
-        <Row label="Gross sales" value={money(projection.grossSales)} strong />
-        <Row label="Less: VAT" value={money(-projection.vat)} />
-        <div className="mt-1 border-t border-line pt-1">
-          <Row label="Net sales" value={money(projection.netSales)} strong />
-          <Row label="Less: Cost of goods sold" value={money(-projection.cogs)} />
-        </div>
-        <div className="mt-1 border-t border-line pt-1">
-          <Row label="Gross profit" value={money(projection.grossProfit)} strong />
-          <Row label="Less: Monthly OPEX" value={money(-projection.opex)} />
-        </div>
-        <div className="mt-1 border-t-2 border-ink pt-1">
-          <Row label="Net profit" value={money(projection.netProfit)} strong tone={toneOf(projection.netProfit)} />
-          <Row label="Net profit margin" value={percent(projection.netProfitMargin)} tone={toneOf(projection.netProfit)} />
-        </div>
-        <p className="mt-4 text-xs text-ink-muted">
-          For planning only. This projection uses your recipes, selling prices, expected orders, and OPEX. It does not represent actual business results.
-        </p>
-      </Card>
+      <div className="flex flex-col gap-4 self-start max-lg:order-first lg:sticky lg:top-28">
+        <Card title="Monthly profit projection">
+          <Row label="Gross sales" value={money(projection.grossSales)} strong />
+          <Row label="Less: VAT" value={money(-projection.vat)} />
+          <div className="mt-1 border-t border-line pt-1">
+            <Row label="Net sales" value={money(projection.netSales)} strong />
+            <Row label="Less: Cost of goods sold" value={money(-projection.cogs)} />
+          </div>
+          <div className="mt-1 border-t border-line pt-1">
+            <Row label="Gross profit" value={money(projection.grossProfit)} strong />
+            <Row label="Less: Monthly OPEX" value={money(-projection.opex)} />
+          </div>
+          <div className="mt-1 border-t-2 border-ink pt-1">
+            <Row label="Net profit" value={money(projection.netProfit)} strong tone={toneOf(projection.netProfit)} />
+            <Row label="Net profit margin" value={percent(projection.netProfitMargin)} tone={toneOf(projection.netProfit)} />
+          </div>
+          <p className="mt-4 text-xs text-ink-muted">
+            For planning only. This projection uses your recipes, selling prices, expected orders, and OPEX. It does not represent actual business results.
+          </p>
+        </Card>
+        <ExportCard />
+      </div>
     </div>
   )
 }
