@@ -1,20 +1,30 @@
 import { Tabs } from '@base-ui/react/tabs'
 import { Toaster } from 'sonner'
+import { ItemsPanel } from './features/ItemsPanel'
+import { OpexPanel } from './features/OpexPanel'
+import { RecipesPanel } from './features/RecipesPanel'
+import { SummaryPanel } from './features/SummaryPanel'
+import { UnitsPanel } from './features/UnitsPanel'
+import { type Tab, useNav } from './nav'
 
-const sections = [
-  { value: 'recipes', label: 'Recipes' },
-  { value: 'ingredients', label: 'Ingredients' },
-  { value: 'packaging', label: 'Packaging' },
-  { value: 'opex', label: 'OPEX' },
-  { value: 'summary', label: 'Summary' },
-] as const
+const sections: { value: Tab; label: string; panel: React.ReactNode }[] = [
+  { value: 'recipes', label: 'Recipes', panel: <RecipesPanel /> },
+  { value: 'ingredients', label: 'Ingredients', panel: <ItemsPanel kind="ingredients" /> },
+  { value: 'packaging', label: 'Packaging', panel: <ItemsPanel kind="packaging" /> },
+  { value: 'units', label: 'Units', panel: <UnitsPanel /> },
+  { value: 'opex', label: 'OPEX', panel: <OpexPanel /> },
+  { value: 'summary', label: 'Summary', panel: <SummaryPanel /> },
+]
 
 export default function App() {
+  const tab = useNav((s) => s.tab)
+  const go = useNav((s) => s.go)
+
   return (
     <div className="min-h-dvh">
-      <Tabs.Root defaultValue="recipes">
+      <Tabs.Root value={tab} onValueChange={(v) => go(v as Tab)}>
         <header className="sticky top-0 z-10 border-b border-line bg-surface/90 backdrop-blur">
-          <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 pt-4 sm:px-6">
+          <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 pt-4 sm:px-6">
             <h1 className="text-base font-semibold tracking-tight">Food Costing Calculator</h1>
             <Tabs.List className="relative -mb-px flex gap-1 overflow-x-auto">
               {sections.map((s) => (
@@ -31,18 +41,16 @@ export default function App() {
           </div>
         </header>
 
-        <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6">
+        <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6">
           {sections.map((s) => (
             <Tabs.Panel key={s.value} value={s.value}>
-              <div className="rounded-xl border border-line bg-surface p-6 text-sm text-ink-muted">
-                {s.label} coming soon.
-              </div>
+              {s.panel}
             </Tabs.Panel>
           ))}
         </main>
       </Tabs.Root>
 
-      <Toaster position="bottom-right" />
+      <Toaster position="bottom-right" theme="dark" />
     </div>
   )
 }

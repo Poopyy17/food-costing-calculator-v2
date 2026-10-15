@@ -3,18 +3,18 @@
 @theme {
   --font-sans: ui-sans-serif, system-ui, 'Segoe UI', Roboto, sans-serif;
 
-  /* Neutral surface + one accent, so numbers stay the focus */
-  --color-canvas: #f7f7f5;
-  --color-surface: #ffffff;
-  --color-line: #e7e6e1;
-  --color-ink: #1c1b18;
-  --color-ink-muted: #6b6a63;
-  --color-accent: #2f7d4f;
-  --color-accent-strong: #256641;
-  --color-accent-soft: #e8f3ec;
-  --color-danger: #c2412d;
-  --color-profit: #2f7d4f;
-  --color-loss: #c2412d;
+  /* Dark by default: neutral surfaces + one accent, so numbers stay the focus */
+  --color-canvas: #131312;
+  --color-surface: #1c1c1a;
+  --color-line: #2e2d2a;
+  --color-ink: #edece7;
+  --color-ink-muted: #a09f97;
+  --color-accent: #2f8a56;
+  --color-accent-strong: #3a9d66;
+  --color-accent-soft: #1b3024;
+  --color-danger: #ea7a64;
+  --color-profit: #62c48f;
+  --color-loss: #f0806b;
 
   /* Strong custom curves; built-in CSS easings feel weak */
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
@@ -22,7 +22,20 @@
   --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
 }
 
+/* Hover only on devices with a real pointer, so taps don't stick */
+@custom-variant hover-fine {
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      @slot;
+    }
+  }
+}
+
 @layer base {
+  :root {
+    color-scheme: dark;
+  }
+
   html {
     -webkit-font-smoothing: antialiased;
   }
@@ -38,19 +51,30 @@
   }
 }
 
+/* A row the user just added eases in, so it doesn't teleport into the list. */
+.enter {
+  transition:
+    opacity 200ms var(--ease-out),
+    translate 200ms var(--ease-out);
+
+  @starting-style {
+    opacity: 0;
+    translate: 0 -4px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .enter {
+    transition: opacity 150ms ease;
+
+    @starting-style {
+      translate: none;
+    }
+  }
+
   *,
   *::before,
   *::after {
     transition-property: opacity, color, background-color, border-color !important;
-  }
-}
-
-/* Hover only on devices with a real pointer, so taps don't stick */
-@custom-variant hover-fine {
-  @media (hover: hover) and (pointer: fine) {
-    &:hover {
-      @slot;
-    }
   }
 }
